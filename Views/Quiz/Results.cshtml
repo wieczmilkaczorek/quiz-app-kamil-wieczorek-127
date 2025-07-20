@@ -1,0 +1,14 @@
+@model QuizApp.Models.QuizAttempt
+
+@{
+    ViewData["Title"] = "Wyniki Quizu";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Twój wynik</h1>
+    <h2>Quiz: @Model.Quiz.Title</h2>
+    <p class="lead mt-3">
+        Zdobyłeś <strong class="fs-3">@Model.Score</strong> na <strong class="fs-3">@ViewBag.TotalPoints</strong> możliwych punktów.
+    </p>
+    <a asp-action="Index" class="btn btn-primary mt-3">Wróć do listy quizów</a>
+</div>

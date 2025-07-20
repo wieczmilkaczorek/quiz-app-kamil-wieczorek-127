@@ -1,0 +1,35 @@
+@model IEnumerable<QuizApp.Models.Quiz>
+
+@{
+    ViewData["Title"] = "Dostępne Quizy";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        @foreach (var quiz in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@quiz.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Autor: @(quiz.Author?.UserName ?? "Anonimowy")</h6>
+                        <p class="card-text">@quiz.Description</p>
+                        <a asp-action="Take" asp-route-id="@quiz.Id" class="btn btn-primary">Rozwiąż Quiz</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center" role="alert">
+        <h4 class="alert-heading">Proszę się zalogować</h4>
+        <p>Aby zobaczyć quizy, musisz się zalogować.</p>
+        <hr>
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">Zaloguj się</a>
+    </div>
+}

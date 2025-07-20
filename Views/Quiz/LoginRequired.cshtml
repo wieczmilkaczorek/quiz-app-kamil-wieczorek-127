@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Logowanie wymagane";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <p class="lead">Aby przeglądać i rozwiązywać quizy, musisz się zalogować.</p>
+    
+    <div class="mt-4">
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary btn-lg">
+            Zaloguj się
+        </a>
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-secondary btn-lg ml-2">
+            Zarejestruj się
+        </a>
+    </div>
+    
+    <div class="mt-4">
+        <p class="text-muted">
+            Nie masz jeszcze konta? <a asp-area="Identity" asp-page="/Account/Register">Zarejestruj się tutaj</a>
+        </p>
+    </div>
+</div>

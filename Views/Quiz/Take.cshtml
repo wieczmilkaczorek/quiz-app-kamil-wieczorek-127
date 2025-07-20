@@ -1,0 +1,30 @@
+@model QuizApp.Models.Quiz
+
+@{
+    ViewData["Title"] = $"Rozwiąż: {Model.Title}";
+}
+
+<h1>@Model.Title</h1>
+<p>@Model.Description</p>
+
+<hr />
+
+<form asp-action="Submit" asp-route-id="@Model.Id" method="post">
+    @foreach (var question in Model.Questions)
+    {
+        <div class="mb-4">
+            <h5>@question.Text (@question.Points pkt.)</h5>
+            
+            @foreach (var answer in question.Answers)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="selectedAnswers[@question.Id]" id="answer-@answer.Id" value="@answer.Id" required>
+                    <label class="form-check-label" for="answer-@answer.Id">
+                        @answer.Text
+                    </label>
+                </div>
+            }
+        </div>
+    }
+    <button type="submit" class="btn btn-success">Zakończ i sprawdź wyniki</button>
+</form>

@@ -1,0 +1,58 @@
+@model IEnumerable<QuizApp.Models.Quiz>
+
+@{
+    ViewData["Title"] = "Panel Administratora - Zarządzanie Quizami";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-action="Users" class="btn btn-info">Zarządzaj Użytkownikami</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tytuł</th>
+                <th>Autor</th>
+                <th>Liczba Pytań</th>
+                <th>Data Utworzenia</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var quiz in Model)
+            {
+                <tr>
+                    <td>@quiz.Id</td>
+                    <td>@quiz.Title</td>
+                    <td>@(quiz.Author?.UserName ?? "Nieznany")</td>
+                    <td>@quiz.Questions.Count</td>
+                    <td>@quiz.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        <a asp-action="EditQuiz" asp-route-id="@quiz.Id" class="btn btn-sm btn-warning">Edytuj</a>
+                        <a asp-action="DeleteQuiz" asp-route-id="@quiz.Id" class="btn btn-sm btn-danger">Usuń</a>
+                        <a asp-controller="Quiz" asp-action="Take" asp-route-id="@quiz.Id" class="btn btn-sm btn-primary">Podgląd</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <h4>Brak quizów</h4>
+        <p>Nie ma jeszcze żadnych quizów w systemie.</p>
+    </div>
+}

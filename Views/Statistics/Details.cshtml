@@ -1,0 +1,51 @@
+@model QuizApp.ViewModels.StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statystyki dla: " + Model.QuizTitle;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Liczba Wypełnień</h5>
+                <p class="card-text display-4">@Model.TotalAttempts</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Średni Wynik</h5>
+                <p class="card-text display-4">@Model.AverageScore.ToString("F2")</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+@foreach (var question in Model.QuestionStats)
+{
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Pytanie:</strong> @question.QuestionText
+        </div>
+        <ul class="list-group list-group-flush">
+            @foreach (var answer in question.AnswerStats)
+            {
+                <li class="list-group-item @(answer.IsCorrect ? "list-group-item-success" : "")">
+                    <div class="d-flex justify-content-between">
+                        <span>@answer.AnswerText @(answer.IsCorrect ? " (Poprawna)" : "")</span>
+                        <span><strong>@answer.SelectionCount</strong> (@answer.SelectionPercentage.ToString("F1")%)</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar" role="progressbar" style="width: @answer.SelectionPercentage.ToString("F1")%;" aria-valuenow="@answer.SelectionPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+}

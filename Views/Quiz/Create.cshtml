@@ -1,0 +1,52 @@
+@model QuizApp.ViewModels.CreateQuizViewModel
+@using QuizApp.ViewModels
+
+@{
+    ViewData["Title"] = "Stwórz nowy quiz";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <hr />
+
+    <div id="questions-container">
+        @for (var i = 0; i < Model.Questions.Count; i++)
+        {
+            <partial name="_QuestionFormPartial" for="Questions[i]" />
+        }
+    </div>
+
+    <button type="button" id="add-question" class="btn btn-secondary mt-2">Dodaj kolejne pytanie</button>
+
+    <hr />
+    <div class="form-group mt-4">
+        <input type="submit" value="Stwórz Quiz" class="btn btn-primary" />
+    </div>
+</form>
+
+<div id="question-template" style="display: none;">
+    @{
+        var emptyQuestion = new QuestionViewModel { Answers = { new AnswerViewModel(), new AnswerViewModel() }};
+    }
+    <partial name="_QuestionFormPartial" model="emptyQuestion" />
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/quiz-builder.js" asp-append-version="true"></script>
+}

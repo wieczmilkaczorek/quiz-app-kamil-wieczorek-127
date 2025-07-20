@@ -1,0 +1,64 @@
+@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Panel Administratora - Zarządzanie Użytkownikami";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-action="Index" class="btn btn-secondary">Powrót do Quizów</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Nazwa Użytkownika</th>
+                <th>Role</th>
+                <th>Liczba Quizów</th>
+                <th>Email Potwierdzony</th>
+                <th>Data Rejestracji</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userInfo in Model)
+            {
+                <tr>
+                    <td>@userInfo.User.Email</td>
+                    <td>@userInfo.User.UserName</td>
+                    <td>
+                        @if (userInfo.Roles.Contains("Admin"))
+                        {
+                            <span class="badge bg-danger">Administrator</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Użytkownik</span>
+                        }
+                    </td>
+                    <td>@userInfo.QuizCount</td>
+                    <td>
+                        @if (userInfo.User.EmailConfirmed)
+                        {
+                            <span class="badge bg-success">Tak</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Nie</span>
+                        }
+                    </td>
+                    <td>@userInfo.User.CreatedAt.ToString("dd.MM.yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <h4>Brak użytkowników</h4>
+        <p>Nie ma jeszcze żadnych użytkowników w systemie.</p>
+    </div>
+}

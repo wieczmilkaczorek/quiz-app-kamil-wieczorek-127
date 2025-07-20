@@ -1,0 +1,89 @@
+@model QuizApp.Models.Quiz
+
+@{
+    ViewData["Title"] = "Edytuj Quiz - Panel Administratora";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-action="Index" class="btn btn-secondary">Powrót do Listy</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="EditQuiz" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="AuthorId" />
+            <input type="hidden" asp-for="CreatedAt" />
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Tytuł Quiz</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Opis</label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-4">
+                <h4>Pytania (@Model.Questions.Count)</h4>
+                @if (Model.Questions.Any())
+                {
+                    @for (int i = 0; i < Model.Questions.Count; i++)
+                    {
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <strong>Pytanie @(i + 1)</strong>
+                            </div>
+                            <div class="card-body">
+                                <input type="hidden" asp-for="Questions[i].Id" />
+                                
+                                <div class="mb-2">
+                                    <label class="form-label">Treść pytania</label>
+                                    <input asp-for="Questions[i].Text" class="form-control" />
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <label class="form-label">Punkty</label>
+                                    <input asp-for="Questions[i].Points" class="form-control" type="number" />
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <label class="form-label">Odpowiedzi</label>
+                                    @for (int j = 0; j < Model.Questions[i].Answers.Count; j++)
+                                    {
+                                        <div class="input-group mb-1">
+                                            <input type="hidden" asp-for="Questions[i].Answers[j].Id" />
+                                            <input asp-for="Questions[i].Answers[j].Text" class="form-control" placeholder="Odpowiedź @(j + 1)" />
+                                            <div class="input-group-text">
+                                                <input asp-for="Questions[i].Answers[j].IsCorrect" type="checkbox" />
+                                                <span class="ms-1">Poprawna</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">Ten quiz nie ma jeszcze pytań.</p>
+                }
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success">Zapisz Zmiany</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,33 @@
+@model QuizApp.Models.Quiz
+
+@{
+    ViewData["Title"] = "Usuń Quiz";
+}
+
+<h1>Usuń Quiz</h1>
+
+<h3>Czy na pewno chcesz usunąć ten quiz?</h3>
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Tytuł
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            Opis
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="MyQuizzes">Wróć do listy</a>
+    </form>
+</div>
